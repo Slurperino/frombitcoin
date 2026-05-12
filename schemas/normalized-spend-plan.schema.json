@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/normalized-spend-plan.schema.json",
+  "title": "NormalizedSpendPlanV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "btcNetwork",
+    "inputs",
+    "outputs",
+    "feeSats",
+    "nVersion",
+    "nLockTime",
+    "sighashType"
+  ],
+  "properties": {
+    "kind": {
+      "const": "NormalizedSpendPlanV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "btcNetwork": {
+      "$ref": "#/$defs/uintString"
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "btcTxId",
+          "vout",
+          "valueSats",
+          "scriptTemplateId"
+        ],
+        "properties": {
+          "btcTxId": {
+            "$ref": "#/$defs/bytes32Hex"
+          },
+          "vout": {
+            "$ref": "#/$defs/uintString"
+          },
+          "valueSats": {
+            "$ref": "#/$defs/uintString"
+          },
+          "scriptTemplateId": {
+            "$ref": "#/$defs/bytes32Hex",
+            "description": "Hash of the signing template or script class for this input."
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "scriptPubKeyHex",
+          "valueSats"
+        ],
+        "properties": {
+          "scriptPubKeyHex": {
+            "$ref": "#/$defs/bytesHex"
+          },
+          "valueSats": {
+            "$ref": "#/$defs/uintString"
+          }
+        }
+      }
+    },
+    "feeSats": {
+      "$ref": "#/$defs/uintString"
+    },
+    "nVersion": {
+      "$ref": "#/$defs/int32String"
+    },
+    "nLockTime": {
+      "$ref": "#/$defs/uintString"
+    },
+    "sighashType": {
+      "$ref": "#/$defs/uintString"
+    }
+  },
+  "$defs": {
+    "bytes32Hex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$"
+    },
+    "bytesHex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]*$"
+    },
+    "uintString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "int32String": {
+      "type": "string",
+      "pattern": "^-?(0|[1-9][0-9]*)$"
+    }
+  }
+}

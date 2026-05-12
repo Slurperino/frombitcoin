@@ -1,0 +1,23 @@
+{
+  "serviceName": "bitcoinbride-redeem-relayer-sepolia-signet-chainlink",
+  "database": "/var/lib/bitcoinbride/sepolia-signet-chainlink-redeems.sqlite",
+  "pollIntervalMs": 12000,
+  "health": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 8789
+  },
+  "watcher": {
+    "enabled": false
+  },
+  "attester": {
+    "enabled": false
+  },
+  "relayer": {
+    "enabled": true,
+    "rpcUrl": "https://replace-with-primary-sepolia-rpc",
+    "burnGateway": "0x019937553781Fa7140189ABbf5582ED55CEfb580",
+    "privateKeyEnv": "RELAYER_PRIVATE_KEY",
+    "limit": 100
+  }
+}

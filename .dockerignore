@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.git
+.DS_Store
+._*
+.env
+*.env
+*.local.json
+*.log
+*.pid
+*.sqlite
+*.sqlite-*
+release-spend-plan.json
+ops/env/*.env
+ops/runs/
+.codex-rlm/
+.turbo-context/

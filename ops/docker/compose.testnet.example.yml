@@ -1,0 +1,96 @@
+services:
+  redeem-watcher:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:redeems
+      - --
+      - --config
+      - /config/redeem-service.json
+      - --role
+      - watcher
+    volumes:
+      - ../../config/redeem-watcher.testnet.example.json:/config/redeem-service.json:ro
+      - ../../release-spend-plan.json:/etc/bitcoinbride/release-spend-plan.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    environment:
+      BITCOINBRIDE_HEALTH_HOST: 0.0.0.0
+    ports:
+      - "127.0.0.1:8787:8787"
+    restart: unless-stopped
+
+  redeem-attester-local:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:redeems
+      - --
+      - --config
+      - /config/redeem-service.json
+      - --role
+      - attester
+    env_file:
+      - ../env/redeem-service.env.example
+    environment:
+      BITCOINBRIDE_HEALTH_HOST: 0.0.0.0
+    volumes:
+      - ../../config/redeem-attester-local.testnet.example.json:/config/redeem-service.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    ports:
+      - "127.0.0.1:8788:8788"
+    restart: unless-stopped
+
+  redeem-relayer:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:redeems
+      - --
+      - --config
+      - /config/redeem-service.json
+      - --role
+      - relayer
+    env_file:
+      - ../env/redeem-service.env.example
+    environment:
+      BITCOINBRIDE_HEALTH_HOST: 0.0.0.0
+    volumes:
+      - ../../config/redeem-relayer.testnet.example.json:/config/redeem-service.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    ports:
+      - "127.0.0.1:8789:8789"
+    restart: unless-stopped
+
+  don-release-adapter:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:don-release-adapter
+      - --
+      - --config
+      - /config/don-release-adapter.json
+    env_file:
+      - ../env/redeem-service.env.example
+    environment:
+      BITCOINBRIDE_ADAPTER_HOST: 0.0.0.0
+    volumes:
+      - ../../config/don-release-adapter.example.json:/config/don-release-adapter.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    ports:
+      - "127.0.0.1:8790:8790"
+    restart: unless-stopped
+
+volumes:
+  redeem-data:

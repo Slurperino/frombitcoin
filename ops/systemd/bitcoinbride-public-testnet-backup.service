@@ -1,0 +1,22 @@
+[Unit]
+Description=BitcoinBride public testnet SQLite backup
+
+[Service]
+Type=oneshot
+User=bitcoinbride
+Group=bitcoinbride
+WorkingDirectory=/opt/bitcoinbride
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run backup:public-testnet -- --db /var/lib/bitcoinbride/public-testnet.sqlite --out-dir /var/backups/bitcoinbride --retention-days 14
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/bitcoinbride /var/backups/bitcoinbride

@@ -1,0 +1,43 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$BITCOINBRIDE_ADAPTER_DOMAIN} {
+	encode zstd gzip
+
+	@preflight path /release/preflight /healthz
+	reverse_proxy @preflight don-release-adapter:8790
+
+	respond 404
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}
+
+{$BITCOINBRIDE_PUBLIC_API_DOMAIN} {
+	encode zstd gzip
+
+	@public_api path /healthz /status /deposits /deposits/* /redeems /redeems/*
+	reverse_proxy @public_api public-testnet-api:8880
+
+	respond 404
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

@@ -1,0 +1,32 @@
+[Unit]
+Description=BitcoinBride public testnet API
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=bitcoinbride
+Group=bitcoinbride
+WorkingDirectory=/opt/bitcoinbride
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/bitcoinbride/redeem-service.env
+ExecStart=/usr/bin/npm run service:public-testnet-api -- --config /etc/bitcoinbride/public-testnet.json
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/bitcoinbride
+
+[Install]
+WantedBy=multi-user.target

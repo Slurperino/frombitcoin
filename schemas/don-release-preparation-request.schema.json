@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/don-release-preparation-request.schema.json",
+  "title": "DonReleasePreparationRequestV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "bridgeDomain",
+    "btcNetwork",
+    "sourceEvmChainId",
+    "bitcoinNetwork",
+    "treasuryAddress",
+    "changePolicyHash",
+    "redeemEvent",
+    "destinationAddress"
+  ],
+  "properties": {
+    "kind": {
+      "const": "DonReleasePreparationRequestV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "bridgeDomain": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "btcNetwork": {
+      "$ref": "#/$defs/uintString"
+    },
+    "sourceEvmChainId": {
+      "$ref": "#/$defs/uintString"
+    },
+    "bitcoinNetwork": {
+      "type": "string",
+      "enum": [
+        "mainnet",
+        "bitcoin",
+        "testnet",
+        "testnet3",
+        "testnet4",
+        "signet",
+        "regtest"
+      ]
+    },
+    "treasuryAddress": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "changePolicyHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "redeemEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "redeemRequestHash",
+        "requester",
+        "txHash",
+        "blockNumber",
+        "blockHash",
+        "logIndex",
+        "destinationScriptHash",
+        "destinationScriptPubKey",
+        "requestNonce",
+        "amountSats",
+        "maxMinerFeeSats",
+        "deadline"
+      ],
+      "properties": {
+        "redeemRequestHash": {
+          "$ref": "#/$defs/bytes32Hex"
+        },
+        "requester": {
+          "$ref": "#/$defs/evmAddress"
+        },
+        "txHash": {
+          "$ref": "#/$defs/bytes32Hex"
+        },
+        "blockNumber": {
+          "$ref": "#/$defs/uintString"
+        },
+        "blockHash": {
+          "$ref": "#/$defs/bytes32Hex"
+        },
+        "logIndex": {
+          "$ref": "#/$defs/uintString"
+        },
+        "destinationScriptHash": {
+          "$ref": "#/$defs/bytes32Hex"
+        },
+        "destinationScriptPubKey": {
+          "$ref": "#/$defs/nonEmptyBytesHex"
+        },
+        "requestNonce": {
+          "$ref": "#/$defs/uintString"
+        },
+        "amountSats": {
+          "$ref": "#/$defs/uintString"
+        },
+        "maxMinerFeeSats": {
+          "$ref": "#/$defs/uintString"
+        },
+        "deadline": {
+          "$ref": "#/$defs/uintString"
+        }
+      }
+    },
+    "destinationAddress": {
+      "$ref": "#/$defs/nonEmptyString"
+    }
+  },
+  "$defs": {
+    "bytes32Hex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$"
+    },
+    "evmAddress": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    },
+    "nonEmptyBytesHex": {
+      "type": "string",
+      "pattern": "^0x(?:[a-fA-F0-9]{2})+$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uintString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    }
+  }
+}

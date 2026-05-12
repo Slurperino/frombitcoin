@@ -1,0 +1,11 @@
+[Unit]
+Description=Run BitcoinBride public testnet reconciliation every five minutes
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

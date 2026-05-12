@@ -1,0 +1,23 @@
+{
+  "serviceName": "bitcoinbride-redeem-relayer-testnet",
+  "database": "/var/lib/bitcoinbride/redeems.sqlite",
+  "pollIntervalMs": 12000,
+  "health": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 8789
+  },
+  "watcher": {
+    "enabled": false
+  },
+  "attester": {
+    "enabled": false
+  },
+  "relayer": {
+    "enabled": true,
+    "rpcUrl": "https://replace-with-evm-testnet-rpc",
+    "burnGateway": "0x0000000000000000000000000000000000000000",
+    "privateKeyEnv": "RELAYER_PRIVATE_KEY",
+    "limit": 100
+  }
+}

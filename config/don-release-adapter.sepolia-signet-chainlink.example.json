@@ -1,0 +1,24 @@
+{
+  "serviceName": "bitcoinbride-don-release-adapter-sepolia-signet-chainlink",
+  "http": {
+    "host": "127.0.0.1",
+    "port": 8790,
+    "maxBodyBytes": 1048576
+  },
+  "policy": {
+    "expectedBridgeDomain": "0xb84b49c26567950191efc570d62716815979df41894b791965fae07dd06ce09a",
+    "expectedBtcNetwork": "3",
+    "expectedSourceEvmChainId": "11155111",
+    "signerAddresses": [
+      "0xE9307C56e77c58b20f3c2D546c79BCed270Ee9f6",
+      "0xE44251397E5094903903F4E0706B6B9b29595Bcf",
+      "0x02704078698E3c32e63c8d66256c4Ca74DdD8b38"
+    ],
+    "threshold": 2,
+    "maxAuthorizationTtlSeconds": 1200,
+    "maxClockSkewSeconds": 60,
+    "minTimeToDeadlineSeconds": 30,
+    "requireSecondaryRedeemEvent": true,
+    "requireSpendPlan": true
+  }
+}

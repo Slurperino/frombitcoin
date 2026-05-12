@@ -1,0 +1,25 @@
+[Unit]
+Description=BitcoinBride redeem watcher
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=bitcoinbride
+Group=bitcoinbride
+WorkingDirectory=/opt/bitcoinbride
+Environment=NODE_ENV=production
+EnvironmentFile=-/etc/bitcoinbride/redeem-service.env
+ExecStart=/usr/bin/npm run service:redeems -- --config /etc/bitcoinbride/redeem-watcher.json --role watcher
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/bitcoinbride
+
+[Install]
+WantedBy=multi-user.target

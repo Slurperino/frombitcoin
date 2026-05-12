@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FromBitcoin Testnet</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css?v=20260508-public-launch">
+    <script src="/app.js?v=20260508-public-launch" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44" role="img">
+            <circle cx="22" cy="22" r="20"></circle>
+            <path d="M16 13h8.2c4 0 6.2 1.7 6.2 4.5 0 1.8-.9 3.1-2.6 3.8 2 .7 3.1 2.2 3.1 4.4 0 3.3-2.5 5.3-6.7 5.3H16V13Zm4.4 4v3.4h3.4c1.4 0 2.1-.6 2.1-1.8 0-1.1-.7-1.6-2.1-1.6h-3.4Zm0 7v3.8H24c1.6 0 2.4-.6 2.4-1.9S25.6 24 24 24h-3.6Z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>FromBitcoin</h1>
+          <p>Externally authorized BTC to EVM testnet bridge</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="testnet-chip">TESTNET ONLY</span>
+        <span id="service-pill" class="service-pill is-loading">Checking</span>
+        <button id="connect-wallet-button" class="wallet-button" type="button">Connect</button>
+        <button id="refresh-button" class="icon-button" type="button" aria-label="Refresh">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6v5h-5"></path>
+            <path d="M20 11a8 8 0 1 0-2.3 5.7"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="launch-warning" aria-label="Testnet warning">
+        <strong>TESTNET ONLY</strong>
+        <span>Use Signet BTC and Sepolia ETH only. Do not send real BTC or mainnet assets.</span>
+      </section>
+
+      <section id="notice" class="notice" hidden></section>
+
+      <section class="user-guide" aria-label="How to test FromBitcoin">
+        <div class="guide-head">
+          <div>
+            <span class="panel-kicker">Public testnet guide</span>
+            <h2>How to test the bridge</h2>
+            <p>Custodial Signet BTC treasury. No native Bitcoin verification on EVM. Testnet funds only.</p>
+          </div>
+        </div>
+        <div class="guide-grid">
+          <article class="guide-step-card">
+            <span class="guide-step">1</span>
+            <div>
+              <strong>Prepare test funds</strong>
+              <p>Get BTC signet for deposits and Sepolia ETH for wallet gas.</p>
+            </div>
+          </article>
+          <article class="guide-step-card">
+            <span class="guide-step">2</span>
+            <div>
+              <strong>Mint bbBTC</strong>
+              <p>Paste a Sepolia recipient, create a deposit, then send the exact signet BTC amount.</p>
+            </div>
+          </article>
+          <article class="guide-step-card">
+            <span class="guide-step">3</span>
+            <div>
+              <strong>Redeem to BTC</strong>
+              <p>Connect Sepolia, paste a tb1 signet address, approve bbBTC, set the fee, then redeem.</p>
+            </div>
+          </article>
+          <article class="guide-step-card">
+            <span class="guide-step">4</span>
+            <div>
+              <strong>Track settlement</strong>
+              <p>Use the ticket and activity feed while external authorization and Bitcoin broadcast progress.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Bridge actions">
+        <div class="main-column">
+          <div class="bridge-stack" aria-label="Bridge flows">
+          <form id="deposit-form" class="bridge-panel" autocomplete="off">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">Deposit flow</span>
+                <h2>BTC to bbBTC</h2>
+                <p id="deposit-limits">Limits loading</p>
+              </div>
+              <span class="network-chip">signet</span>
+            </div>
+
+            <label class="field">
+              <span>Sepolia recipient</span>
+              <input id="recipient-input" name="recipient0x" spellcheck="false" inputmode="text" placeholder="0x...">
+            </label>
+
+            <label class="field">
+              <span>Amount</span>
+              <div class="amount-row">
+                <input id="amount-input" name="expectedSats" type="number" min="1000" step="1" placeholder="1000">
+                <span>sats</span>
+              </div>
+            </label>
+
+            <div class="quick-amounts" role="group" aria-label="Quick deposit amounts">
+              <button type="button" data-sats="1000">1k</button>
+              <button type="button" data-sats="5000">5k</button>
+              <button type="button" data-sats="10000">10k</button>
+            </div>
+
+            <button id="create-deposit-button" class="primary-button" type="submit">Create deposit</button>
+          </form>
+
+          <form id="redeem-form" class="bridge-panel redeem-panel" autocomplete="off">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">Redeem flow</span>
+                <h2>bbBTC to BTC</h2>
+                <p id="redeem-limits">Connect wallet</p>
+              </div>
+              <span class="network-chip">Sepolia</span>
+            </div>
+
+            <div class="wallet-strip">
+              <span id="wallet-address">No wallet</span>
+              <strong id="wallet-balance">...</strong>
+            </div>
+
+            <label class="field">
+              <span>BTC signet destination</span>
+              <input id="redeem-destination-input" name="destination" spellcheck="false" inputmode="text" placeholder="tb1q...">
+            </label>
+
+            <label class="field">
+              <span>Amount</span>
+              <div class="amount-row">
+                <input id="redeem-amount-input" name="amountSats" type="number" min="1" step="1" placeholder="1000">
+                <span>sats</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Max miner fee</span>
+              <div class="amount-row">
+                <input id="redeem-fee-input" name="maxMinerFeeSats" type="number" min="1" step="1" placeholder="500">
+                <span>sats</span>
+              </div>
+            </label>
+
+            <div class="quick-amounts" role="group" aria-label="Quick redeem amounts">
+              <button type="button" data-redeem-sats="1000">1k</button>
+              <button type="button" data-redeem-sats="2500">2.5k</button>
+              <button type="button" data-redeem-sats="5000">5k</button>
+            </div>
+
+            <div class="button-row">
+              <button id="approve-redeem-button" class="secondary-button" type="button">Approve</button>
+              <button id="create-redeem-button" class="primary-button" type="submit">Redeem</button>
+            </div>
+          </form>
+          </div>
+
+          <section class="status-band" aria-label="Network status">
+            <div class="settlement-card" aria-label="Settlement path">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">Settlement path</span>
+                  <h2>Network route</h2>
+                  <p>BTC, Chainlink, EVM</p>
+                </div>
+              </div>
+              <div class="flow-stack" aria-hidden="true">
+                <div class="flow-step">
+                  <span class="flow-icon btc-icon">B</span>
+                  <div>
+                    <strong>Bitcoin signet</strong>
+                    <span>Deposits and releases</span>
+                  </div>
+                </div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">
+                  <span class="flow-icon don-icon">C</span>
+                  <div>
+                    <strong>Chainlink Functions</strong>
+                    <span>Mint and redeem authorization</span>
+                  </div>
+                </div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">
+                  <span class="flow-icon evm-icon">E</span>
+                  <div>
+                    <strong>Sepolia</strong>
+                    <span>bbBTC settlement</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="status-grid">
+              <div class="metric">
+                <span class="metric-label">Signet block</span>
+                <strong id="bitcoin-block">...</strong>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Sepolia block</span>
+                <strong id="evm-block">...</strong>
+              </div>
+              <div class="metric">
+                <span class="metric-label">bbBTC supply</span>
+                <strong id="token-supply">...</strong>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Relayer funding</span>
+                <strong id="relayer-eth">...</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-rail" aria-label="Bridge details">
+          <section class="deposit-panel" aria-label="Latest action">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">Current action</span>
+                <h2>Latest ticket</h2>
+                <p id="ticket-state">No active ticket</p>
+              </div>
+            </div>
+            <div id="deposit-ticket" class="ticket-empty">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="16" y="20" width="88" height="80" rx="8"></rect>
+                <path d="M34 40h52M34 58h52M34 76h32"></path>
+              </svg>
+            </div>
+          </section>
+
+          <section class="ops-panel" aria-label="Live configuration">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">Public testnet</span>
+                <h2>Limits and contracts</h2>
+                <p>Live values</p>
+              </div>
+            </div>
+            <div class="limit-list">
+              <div>
+                <span>Deposit cap</span>
+                <strong id="deposit-cap">...</strong>
+              </div>
+              <div>
+                <span>Redeem cap</span>
+                <strong id="redeem-cap">...</strong>
+              </div>
+              <div>
+                <span>Fee budget</span>
+                <strong id="fee-budget">...</strong>
+              </div>
+              <div>
+                <span>Confirmations</span>
+                <strong id="min-confirmations">...</strong>
+              </div>
+            </div>
+            <div class="contract-list">
+              <button type="button" class="contract-row" data-contract="wrappedBitcoin">
+                <span>bbBTC</span>
+                <strong id="wrapped-bitcoin-contract">...</strong>
+              </button>
+              <button type="button" class="contract-row" data-contract="mintGateway">
+                <span>Mint gateway</span>
+                <strong id="mint-gateway-contract">...</strong>
+              </button>
+              <button type="button" class="contract-row" data-contract="burnGateway">
+                <span>Burn gateway</span>
+                <strong id="burn-gateway-contract">...</strong>
+              </button>
+              <button type="button" class="contract-row" data-contract="chainlinkVerifier">
+                <span>Verifier</span>
+                <strong id="chainlink-verifier-contract">...</strong>
+              </button>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="activity-section">
+        <div class="tabs" role="tablist" aria-label="Activity">
+          <button id="deposits-tab" class="tab is-active" type="button" role="tab" aria-selected="true">Deposits</button>
+          <button id="redeems-tab" class="tab" type="button" role="tab" aria-selected="false">Redeems</button>
+        </div>
+        <div id="activity-list" class="activity-list"></div>
+      </section>
+    </main>
+  </body>
+</html>

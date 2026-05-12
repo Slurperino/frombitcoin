@@ -1,0 +1,77 @@
+{
+  "serviceName": "bitcoinbride-public-testnet-sepolia-signet-chainlink",
+  "database": "/var/lib/bitcoinbride/public-testnet.sqlite",
+  "http": {
+    "host": "0.0.0.0",
+    "port": 8880,
+    "maxBodyBytes": 65536,
+    "depositPostLimitPerMinute": 12,
+    "depositGlobalLimitPerMinute": 60,
+    "depositRecipientLimitPerHour": 6,
+    "minRelayerBalanceEth": "0.005",
+    "statusCacheTtlMs": 5000,
+    "metricsEnabled": false
+  },
+  "evm": {
+    "rpcUrl": "https://replace-with-primary-sepolia-rpc",
+    "primaryRpcUrl": "https://replace-with-primary-sepolia-rpc",
+    "secondaryRpcUrl": "https://replace-with-secondary-sepolia-rpc",
+    "chainId": 11155111,
+    "bridgeDomain": "0xb84b49c26567950191efc570d62716815979df41894b791965fae07dd06ce09a",
+    "relayerPrivateKeyEnv": "RELAYER_PRIVATE_KEY",
+    "depositRegistry": "0x914308aa15cC3907532db70aD2079c179c456e86",
+    "mintGateway": "0x6a35f458E97093BC4458c84FfC04Cff67d5C4FE3",
+    "burnGateway": "0x6eFA4C217171B8B0eb856F48403928D9ad27ac96",
+    "wrappedBitcoin": "0xBAb9A08FB7c20BE72338849301A3363bd6E2cFbD",
+    "chainlinkVerifier": "0x9aE15CfE2D73c284BD3428EdB875D34aA5bb61FA",
+    "fromBlock": 10724700,
+    "scanBatchSize": 500,
+    "finalityBlocks": 64
+  },
+  "chainlink": {
+    "primaryBitcoinApi": "https://mempool.space/signet/api",
+    "secondaryBitcoinApi": "https://blockstream.info/signet/api",
+    "adapterUrl": "https://adapter.example.com/release/preflight",
+    "minConfirmations": 6,
+    "releaseFinalityBlocks": 64
+  },
+  "bitcoin": {
+    "rpcUrl": "http://host.docker.internal:38332",
+    "rpcUserEnv": "BITCOIN_RPC_USER",
+    "rpcPasswordEnv": "BITCOIN_RPC_PASSWORD",
+    "wallet": "treasury",
+    "custodyController": "chainlink-don",
+    "donCustodyAdapterUrl": "https://custody.example.com/release/prepare",
+    "donCustodyAdapterTimeoutMs": 9000,
+    "bitcoinNetwork": "signet",
+    "btcNetwork": "3",
+    "treasuryAddress": "tb1qc3r85fhqlv7u933wsexj3ffcwlvtlzchxey3f6",
+    "changeAddress": "tb1qc3r85fhqlv7u933wsexj3ffcwlvtlzchxey3f6",
+    "minConf": 1,
+    "rpcTimeoutMs": 9000,
+    "rpcMaxRetries": 2,
+    "rpcRetryDelayMs": 250
+  },
+  "deposits": {
+    "minSats": "1000",
+    "maxSats": "100000",
+    "ttlSeconds": 86400,
+    "authorizationTtlSeconds": 1200,
+    "addressLabelPrefix": "bitcoinbride-deposit",
+    "limit": 20
+  },
+  "redeems": {
+    "maxSats": "5000",
+    "maxMinerFeeSats": "1000",
+    "authorizationTtlSeconds": 1200,
+    "changePolicyHash": "0xd1bb7ad48d0a3e6b4f62528a1991704291537ed02dae8d039a4e818391a89b0b",
+    "limit": 20,
+    "autoBroadcastBitcoin": true
+  },
+  "worker": {
+    "pollIntervalMs": 12000,
+    "rpcTimeoutMs": 15000,
+    "rpcMaxRetries": 3,
+    "rpcRetryDelayMs": 1000
+  }
+}

@@ -1,0 +1,15 @@
+node_modules
+build
+.DS_Store
+._*
+.env
+*.env
+*.local.json
+*.log
+*.pid
+*.sqlite
+*.sqlite-*
+release-spend-plan.json
+ops/runs/
+.codex-rlm/
+.turbo-context/

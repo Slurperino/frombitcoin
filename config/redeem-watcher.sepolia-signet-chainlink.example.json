@@ -1,0 +1,28 @@
+{
+  "serviceName": "bitcoinbride-redeem-watcher-sepolia-signet-chainlink",
+  "database": "/var/lib/bitcoinbride/sepolia-signet-chainlink-redeems.sqlite",
+  "pollIntervalMs": 12000,
+  "health": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 8787
+  },
+  "watcher": {
+    "enabled": true,
+    "rpcUrl": "https://replace-with-primary-sepolia-rpc",
+    "burnGateway": "0x019937553781Fa7140189ABbf5582ED55CEfb580",
+    "fromBlock": 10724700,
+    "batchSize": 500,
+    "finalityBlocks": 64,
+    "spendPlanPath": "/etc/bitcoinbride/release-spend-plan.sepolia-signet-chainlink.json",
+    "changePolicyHash": "0xd1bb7ad48d0a3e6b4f62528a1991704291537ed02dae8d039a4e818391a89b0b",
+    "authorizationTtlSeconds": 1200,
+    "cursorName": "evm_redeem_watcher.sepolia_signet_chainlink.last_scanned_block"
+  },
+  "attester": {
+    "enabled": false
+  },
+  "relayer": {
+    "enabled": false
+  }
+}

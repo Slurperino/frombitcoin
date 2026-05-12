@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/mint-authorization.schema.json",
+  "title": "MintAuthorizationV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "bridgeDomain",
+    "depositId",
+    "recipient0x",
+    "btcNetwork",
+    "depositAddressHash",
+    "btcTxId",
+    "vout",
+    "sats",
+    "confirmations",
+    "observedBlockHeight",
+    "attestationTimestamp",
+    "deadline"
+  ],
+  "properties": {
+    "kind": {
+      "const": "MintAuthorizationV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "bridgeDomain": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "depositId": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "recipient0x": {
+      "$ref": "#/$defs/evmAddress"
+    },
+    "btcNetwork": {
+      "$ref": "#/$defs/uintString",
+      "description": "Unsigned integer network identifier agreed by bridge config."
+    },
+    "depositAddressHash": {
+      "$ref": "#/$defs/bytes32Hex",
+      "description": "keccak256 of the canonical deposit address representation."
+    },
+    "btcTxId": {
+      "$ref": "#/$defs/bytes32Hex",
+      "description": "BTC txid in canonical display order bytes, not little-endian raw serialization."
+    },
+    "vout": {
+      "$ref": "#/$defs/uintString"
+    },
+    "sats": {
+      "$ref": "#/$defs/uintString"
+    },
+    "confirmations": {
+      "$ref": "#/$defs/uintString"
+    },
+    "observedBlockHeight": {
+      "$ref": "#/$defs/uintString"
+    },
+    "attestationTimestamp": {
+      "$ref": "#/$defs/uintString",
+      "description": "Unix seconds when the DON produced the authorization."
+    },
+    "deadline": {
+      "$ref": "#/$defs/uintString",
+      "description": "Unix seconds after which the authorization must be rejected."
+    }
+  },
+  "$defs": {
+    "bytes32Hex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$"
+    },
+    "evmAddress": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    },
+    "uintString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    }
+  }
+}

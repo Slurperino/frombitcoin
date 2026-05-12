@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/release-authorization.schema.json",
+  "title": "ReleaseAuthorizationV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "bridgeDomain",
+    "redeemRequestHash",
+    "redeemId",
+    "btcNetwork",
+    "sourceEvmChainId",
+    "burnTxHash",
+    "burnLogIndex",
+    "requester",
+    "destinationScriptHash",
+    "amountSats",
+    "maxMinerFeeSats",
+    "changePolicyHash",
+    "inputsCommitment",
+    "outputsCommitment",
+    "psbtPolicyHash",
+    "attestationTimestamp",
+    "deadline"
+  ],
+  "properties": {
+    "kind": {
+      "const": "ReleaseAuthorizationV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "bridgeDomain": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "redeemRequestHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "redeemId": {
+      "$ref": "#/$defs/bytes32Hex",
+      "description": "Derived from the finalized burn event identity plus redeemRequestHash."
+    },
+    "btcNetwork": {
+      "$ref": "#/$defs/uintString"
+    },
+    "sourceEvmChainId": {
+      "$ref": "#/$defs/uintString"
+    },
+    "burnTxHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "burnLogIndex": {
+      "$ref": "#/$defs/uintString"
+    },
+    "requester": {
+      "$ref": "#/$defs/evmAddress"
+    },
+    "destinationScriptHash": {
+      "$ref": "#/$defs/bytes32Hex",
+      "description": "keccak256 of the raw destination scriptPubKey bytes."
+    },
+    "amountSats": {
+      "$ref": "#/$defs/uintString"
+    },
+    "maxMinerFeeSats": {
+      "$ref": "#/$defs/uintString"
+    },
+    "changePolicyHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "inputsCommitment": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "outputsCommitment": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "psbtPolicyHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "attestationTimestamp": {
+      "$ref": "#/$defs/uintString"
+    },
+    "deadline": {
+      "$ref": "#/$defs/uintString"
+    }
+  },
+  "$defs": {
+    "bytes32Hex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$"
+    },
+    "evmAddress": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    },
+    "uintString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    }
+  }
+}

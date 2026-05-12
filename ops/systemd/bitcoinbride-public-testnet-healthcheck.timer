@@ -1,0 +1,11 @@
+[Unit]
+Description=Run BitcoinBride public testnet healthcheck every two minutes
+
+[Timer]
+OnBootSec=1m
+OnUnitActiveSec=2m
+AccuracySec=15s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

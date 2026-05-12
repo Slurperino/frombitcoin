@@ -1,0 +1,23 @@
+[Unit]
+Description=BitcoinBride public testnet healthcheck
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=bitcoinbride
+Group=bitcoinbride
+WorkingDirectory=/opt/bitcoinbride
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run health:public-testnet -- --base-url https://api.frombitcoin.link --adapter-url https://adapter.frombitcoin.link --expected-burn-gateway 0x6eFA4C217171B8B0eb856F48403928D9ad27ac96 --attempts 3 --retry-delay-ms 10000
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6

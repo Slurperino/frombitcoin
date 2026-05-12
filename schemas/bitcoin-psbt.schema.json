@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/bitcoin-psbt.schema.json",
+  "title": "BitcoinPsbtV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "btcNetwork",
+    "psbtBase64"
+  ],
+  "properties": {
+    "kind": {
+      "const": "BitcoinPsbtV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "btcNetwork": {
+      "$ref": "#/$defs/uintString"
+    },
+    "psbtBase64": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+    }
+  },
+  "$defs": {
+    "uintString": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    }
+  }
+}

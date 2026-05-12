@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bitcoinbride.local/schemas/release-attestation.schema.json",
+  "title": "ReleaseAttestationV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "redeemRequestHash",
+    "signerSetDigest",
+    "messageDigest",
+    "attestation"
+  ],
+  "properties": {
+    "kind": {
+      "const": "ReleaseAttestationV1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "redeemRequestHash": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "signerSetDigest": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "messageDigest": {
+      "$ref": "#/$defs/bytes32Hex"
+    },
+    "attestation": {
+      "$ref": "#/$defs/nonEmptyBytesHex"
+    }
+  },
+  "$defs": {
+    "bytes32Hex": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$"
+    },
+    "nonEmptyBytesHex": {
+      "type": "string",
+      "pattern": "^0x(?:[a-fA-F0-9]{2})+$"
+    }
+  }
+}

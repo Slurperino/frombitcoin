@@ -1,0 +1,114 @@
+services:
+  public-testnet-api:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:public-testnet-api
+      - --
+      - --config
+      - /config/public-testnet.json
+    env_file:
+      - ../env/redeem-service.env.example
+    volumes:
+      - ../../config/public-testnet.sepolia-signet-chainlink.docker.example.json:/config/public-testnet.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    expose:
+      - "8880"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  public-testnet-worker:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:public-testnet-worker
+      - --
+      - --config
+      - /config/public-testnet.json
+    env_file:
+      - ../env/redeem-service.env.example
+    volumes:
+      - ../../config/public-testnet.sepolia-signet-chainlink.docker.example.json:/config/public-testnet.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  don-release-adapter:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - service:don-release-adapter
+      - --
+      - --config
+      - /config/don-release-adapter.json
+    env_file:
+      - ../env/redeem-service.env.example
+    environment:
+      BITCOINBRIDE_ADAPTER_HOST: 0.0.0.0
+      BITCOINBRIDE_ADAPTER_PORT: 8790
+    volumes:
+      - ../../config/don-release-adapter.sepolia-signet-chainlink.example.json:/config/don-release-adapter.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    expose:
+      - "8790"
+    restart: unless-stopped
+
+  public-testnet-reconcile:
+    profiles:
+      - ops
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    command:
+      - npm
+      - run
+      - reconcile:public-testnet
+      - --
+      - --config
+      - /config/public-testnet.json
+      - --stale-seconds
+      - "3600"
+      - --fail-on-warning
+    env_file:
+      - ../env/redeem-service.env.example
+    volumes:
+      - ../../config/public-testnet.sepolia-signet-chainlink.docker.example.json:/config/public-testnet.json:ro
+      - redeem-data:/var/lib/bitcoinbride
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  caddy:
+    image: caddy:2.9-alpine
+    depends_on:
+      - don-release-adapter
+      - public-testnet-api
+    env_file:
+      - ../env/redeem-service.env.example
+    environment:
+      BITCOINBRIDE_ADAPTER_DOMAIN: adapter.example.com
+      BITCOINBRIDE_PUBLIC_API_DOMAIN: api.example.com
+      ACME_EMAIL: ops@example.com
+    volumes:
+      - ../caddy/Caddyfile.chainlink-adapter.example:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+
+volumes:
+  redeem-data:
+  caddy-data:
+  caddy-config:

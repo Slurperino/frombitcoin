@@ -1,0 +1,24 @@
+[Unit]
+Description=BitcoinBride public testnet reconciliation
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=bitcoinbride
+Group=bitcoinbride
+WorkingDirectory=/opt/bitcoinbride
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run reconcile:public-testnet -- --config /etc/bitcoinbride/public-testnet.json --stale-seconds 3600 --fail-on-warning
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/bitcoinbride

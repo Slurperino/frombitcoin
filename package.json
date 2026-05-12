@@ -1,0 +1,60 @@
+{
+  "name": "bitcoinbride",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BTC <-> EVM bridge prototype with DON-gated state transitions",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "build": "node scripts/compile.js",
+    "test": "node --test --test-concurrency=1",
+    "deploy": "node scripts/deploy.js",
+    "validate:authorization": "node scripts/validate-authorization.js",
+    "watch:redeems": "node scripts/watch-redeems.js",
+    "attest:redeems": "node scripts/attest-redeems.js",
+    "ingest:attestation": "node scripts/ingest-attestation.js",
+    "verify:don-release": "node scripts/verify-don-release.js",
+    "configure:chainlink-functions": "node scripts/configure-chainlink-functions.js",
+    "request:chainlink-mint": "node scripts/request-chainlink-mint.js",
+    "request:chainlink-release": "node scripts/request-chainlink-release.js",
+    "encode:chainlink-attestation": "node scripts/encode-chainlink-attestation.js",
+    "fetch:redeem-event": "node scripts/fetch-redeem-event.js",
+    "relay:redeems": "node scripts/relay-redeems.js",
+    "build:bitcoin-psbt": "node scripts/build-bitcoin-psbt.js",
+    "broadcast:bitcoin-tx": "node scripts/broadcast-bitcoin-tx.js",
+    "regtest:bitcoin-release": "node scripts/run-bitcoin-regtest-release.js",
+    "service:don-release-adapter": "node scripts/don-release-adapter.js",
+    "service:redeems": "node scripts/redeem-service.js",
+    "service:public-testnet-api": "node scripts/public-testnet-api.js",
+    "service:public-testnet-worker": "node scripts/public-testnet-worker.js",
+    "sign:release-psbt": "node scripts/sign-release-psbt.js",
+    "health:public-testnet": "node scripts/public-testnet-healthcheck.js",
+    "reconcile:public-testnet": "node scripts/public-testnet-reconcile.js",
+    "backup:public-testnet": "node scripts/backup-public-testnet-db.js",
+    "check:ops": "node scripts/check-ops.js",
+    "audit:prod": "node scripts/audit-production.js",
+    "audit:all": "npm audit"
+  },
+  "dependencies": {
+    "ajv": "^8.18.0",
+    "bitcoinjs-lib": "^7.0.1",
+    "commander": "14.0.3",
+    "ecpair": "^3.0.1",
+    "ethers": "6.16.0",
+    "tiny-secp256k1": "^2.2.4"
+  },
+  "devDependencies": {
+    "ganache": "7.9.2",
+    "solc": "0.8.20"
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
