@@ -11,7 +11,11 @@ FromBitcoin is a BTC <-> EVM bridge design centered on one rule:
 - Chainlink release preflight adapter: [https://adapter.frombitcoin.link/healthz](https://adapter.frombitcoin.link/healthz)
 - GitHub repository: [https://github.com/faustogq/frombitcoin](https://github.com/faustogq/frombitcoin)
 
-The web app is served from [public](public) by the public testnet API process. It exposes the Signet BTC -> Sepolia bbBTC deposit flow, the Sepolia bbBTC -> Signet BTC redeem flow, public activity, testnet status, and a visible testnet-only warning.
+For product or Chainlink review, start with the web app. No local setup or command-line usage is required to inspect the public testnet flow.
+
+The web app exposes the Signet BTC -> Sepolia bbBTC deposit flow, the Sepolia bbBTC -> Signet BTC redeem flow, public activity, testnet status, and a visible testnet-only warning.
+
+## Trust Model
 
 Every sensitive state transition must require a valid DON authorization:
 
@@ -19,6 +23,9 @@ Every sensitive state transition must require a valid DON authorization:
 - no BTC release without DON authorization,
 - no replay of `depositId` or `redeemId`,
 - no BTC signature unless the signer can verify an exact match between the candidate PSBT and the DON authorization.
+
+<details>
+<summary>Technical reference for developers and operators</summary>
 
 The main architecture and product spec lives here:
 
@@ -505,3 +512,5 @@ npm run broadcast:bitcoin-tx -- \
 ```
 
 This is suitable for regtest/testnet validation. Mainnet signing for the Chainlink-only-risk model must be performed by the DON-controlled BTC custody path, with no local wallet signer or raw-sign endpoint.
+
+</details>
