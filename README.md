@@ -4,6 +4,15 @@ BitcoinBride is a BTC <-> EVM bridge design centered on one rule:
 
 > Chainlink does not advise. Chainlink authorizes.
 
+## Live Public Testnet
+
+- Web app: [https://api.frombitcoin.link](https://api.frombitcoin.link)
+- Public API: [https://api.frombitcoin.link/status](https://api.frombitcoin.link/status)
+- Chainlink release preflight adapter: [https://adapter.frombitcoin.link/healthz](https://adapter.frombitcoin.link/healthz)
+- GitHub repository: [https://github.com/faustogq/frombitcoin](https://github.com/faustogq/frombitcoin)
+
+The web app is served from [public](public) by the public testnet API process. It exposes the Signet BTC -> Sepolia bbBTC deposit flow, the Sepolia bbBTC -> Signet BTC redeem flow, public activity, testnet status, and a visible testnet-only warning.
+
 Every sensitive state transition must require a valid DON authorization:
 
 - no mint on EVM without DON authorization,

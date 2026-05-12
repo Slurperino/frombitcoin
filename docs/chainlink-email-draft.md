@@ -4,10 +4,18 @@ Hi,
 
 Thank you for the response. The short version is that FromBitcoin is a BTC <-> EVM bridge prototype where we want the production trust model to reduce to Chainlink DON honesty.
 
+Public links:
+
+- Repository: https://github.com/faustogq/frombitcoin
+- Web app / public testnet frontend: https://api.frombitcoin.link
+- Public API status: https://api.frombitcoin.link/status
+- Chainlink release preflight adapter healthcheck: https://adapter.frombitcoin.link/healthz
+
 Current architecture:
 
 - Mint: a user creates a deposit intent on Sepolia, sends Signet BTC to a unique address, and the service builds a `MintAuthorization`. Chainlink verifies the Bitcoin deposit through independent data sources before the EVM `MintGateway` can mint bbBTC.
 - Redeem: a user burns bbBTC on Sepolia with a destination Bitcoin script, amount, fee cap, and deadline. The service waits for EVM finality, prepares a normalized Bitcoin spend plan, asks Chainlink to verify the burn/release policy, and only then calls `completeRedeemWithAuthorization`.
+- Frontend: the public web app is served by the testnet API from `public/` and lets a tester create Signet deposit intents, connect a Sepolia wallet, redeem bbBTC back to Signet BTC, and track public activity/status. It is intentionally testnet-only and shows a visible warning not to use real BTC or mainnet assets.
 - EVM lockdown: the deploy mode for the target model pins the token minter and deposit consumer to `MintGateway`, wires both gateways to the Chainlink verifier, and renounces ownership so the app owner cannot add minters, rotate signers, pause, change limits, or manually consume redeems after launch.
 
 The specific area where we would like Chainlink guidance is BTC custody/signing. We do not want FromBitcoin infrastructure to hold a Bitcoin treasury signer in the production model. The target design is:
