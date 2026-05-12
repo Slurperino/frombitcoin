@@ -1,6 +1,6 @@
-# BitcoinBride
+# FromBitcoin
 
-BitcoinBride is a BTC <-> EVM bridge design centered on one rule:
+FromBitcoin is a BTC <-> EVM bridge design centered on one rule:
 
 > Chainlink does not advise. Chainlink authorizes.
 
@@ -230,11 +230,7 @@ If the deployer is not the owner, also pass:
 
 Limits are disabled only when both the limit and window are `0`. Mainnet deployments require non-zero mint and redeem limits, the DON threshold must be a strict majority of the configured signer set, and the owner must be a deployed contract such as a multisig or timelock.
 
-The deployment script derives `bridgeDomain` from:
-
-```text
-BitcoinBride:<deployment-environment>:evm:<chain-id>:btc:<btc-network-id>:<bridge-label>
-```
+The deployment script derives `bridgeDomain` from a deployment-specific preimage containing the project namespace, deployment environment, EVM chain id, BTC network id, and bridge label. The dry run prints both `bridgeDomain` and `bridgeDomainPreimage`; copy those exact values into the service configuration.
 
 It also refuses to deploy if the connected RPC chain id does not match `--expected-chain-id`. For `mainnet`, the owner must not be the deployer hot key.
 
